@@ -1,0 +1,3 @@
+PLACEHOLDER for Therabuddy horizontal logo.
+
+Drop the provided horizontal logo image into this location and rename it to "therabuddy-logo-horizontal.png" or update the references in components accordingly.

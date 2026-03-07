@@ -21,7 +21,7 @@ export const metadata = {
  title: "Therabuddy",
  description: "AI-powered mental health diagnostic assistant",
  icons: {
-  icon: "/therabuddy.png",
+  icon: "/favicon.ico",
  },
 }
 

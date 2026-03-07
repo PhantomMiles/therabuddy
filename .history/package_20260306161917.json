@@ -9,13 +9,12 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "next": "16.1.6",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
-    "@fortawesome/react-fontawesome": "^0.2.2",
-    "next": "16.1.6",
-    "next-auth": "^4.24.13",
-    "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "@fortawesome/react-fontawesome": "^0.2.2"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

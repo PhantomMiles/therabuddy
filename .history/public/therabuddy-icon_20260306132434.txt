@@ -1,0 +1,3 @@
+PLACEHOLDER for Therabuddy icon image.
+
+Drop the provided square/round logo image here and rename it to "therabuddy-icon.png" so that Navbar and other components can use it.

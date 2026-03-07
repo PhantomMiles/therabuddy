@@ -17,13 +17,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata = {
- title: "Therabuddy",
- description: "AI-powered mental health diagnostic assistant",
- icons: {
-  icon: "/therabuddy.png",
- },
-}
+export const metadata: Metadata = {
+  title: "Therabuddy",
+  description: "AI mental health infrastructure",
+};
 
 export default function RootLayout({
   children,
