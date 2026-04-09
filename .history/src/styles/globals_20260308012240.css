@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind
+@tailwind utilities;
+
+body {
+  background: #f6f9fc;
+  color: #1f2937;
+}
+
+.medical-card {
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+}
+
+.primary-btn {
+  background: #4f8cff;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 10px;
+}
+
+.primary-btn:hover {
+  background: #3b6fd6;
+}

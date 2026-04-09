@@ -1,5 +1,22 @@
-import { PrismaClient } from "@prisma/client"
+import { PrismaClient } from "@prisma/client";
+import { PrismaLibSql } from "@prisma/adapter-libsql";
+import { createClient } from "@libsql/client";
 
-const prisma = new PrismaClient()
+const globalForPrisma = globalThis as unknown as {
+  prisma: PrismaClient | undefined;
+};
 
-export default prisma
+function createPrisma() {
+  const libsql = createClient({
+    url: process.env.DATABASE_URL ?? "file:./therabuddy.db",
+  });
+
+  const adapter = new PrismaLibSql(libsql);
+  return new PrismaClient({ adapter } as any);
+}
+
+export const prisma = globalForPrisma.prisma ?? createPrisma();
+
+if (process.env.NODE_ENV !== "production") {
+  globalForPrisma.prisma = prisma;
+}

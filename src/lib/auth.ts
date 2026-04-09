@@ -1,28 +1,59 @@
-export async function runTherabuddyAI(message: string) {
+import { NextAuthOptions } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
+import bcrypt from "bcryptjs";
+import { prisma } from "@/lib/prisma";
 
- const response = await fetch("http://localhost:11434/api/generate", {
-  method: "POST",
-  headers: {
-   "Content-Type": "application/json"
+export const authOptions: NextAuthOptions = {
+  providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_ID!,
+      clientSecret: process.env.GOOGLE_SECRET!,
+    }),
+
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) return null;
+
+        const user = await prisma.user.findUnique({
+          where: { email: credentials.email },
+        });
+
+        if (!user || !user.password) return null;
+
+        const valid = await bcrypt.compare(credentials.password, user.password);
+        if (!valid) return null;
+
+        return { id: user.id, name: user.name, email: user.email };
+      },
+    }),
+  ],
+
+  session: {
+    strategy: "jwt" as const,
   },
-  body: JSON.stringify({
-   model: "llama3",
-   prompt: `
-You are Therabuddy, an AI mental health assistant.
 
-Goals:
-- provide emotional support
-- detect anxiety, depression signals
-- recommend coping exercises
-- encourage professional help if necessary
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) token.id = user.id;
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        (session.user as any).id = token.id;
+      }
+      return session;
+    },
+  },
 
-User message:
-${message}
-`
-  })
- })
+  pages: {
+    signIn: "/login",
+  },
 
- const data = await response.json()
-
- return data.response
-}
+  secret: process.env.NEXTAUTH_SECRET,
+};
