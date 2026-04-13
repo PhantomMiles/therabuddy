@@ -14,7 +14,7 @@ export async function POST(req: Request) {
     "Sleeping well": 0, "Slightly disrupted": 1, "Poor sleep": 2, "Can't sleep at all": 3,
     "Yes, fully": 0, "Somewhat": 1, "Barely": 2, "Not at all": 3,
     "High energy": 0, "Normal": 1, "Often tired": 2, "Exhausted": 3,
-    "Not at all": 0, "Occasionally": 1, "Often": 2, "Almost constantly": 3,
+    "Never": 0, "Occasionally": 1, "Often": 2, "Almost constantly": 3,
   };
 
   const totalScore = Object.values(answers).reduce(

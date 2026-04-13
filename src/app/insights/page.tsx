@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/auth";
-import Navbar from "@/components/Navbar";
+import AppShell from "@/components/AppShell";
 import InsightsDashboard from "@/components/InsightsDashboard";
 
 export default async function InsightsPage() {
@@ -9,17 +9,18 @@ export default async function InsightsPage() {
   if (!session) redirect("/login");
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-black">
-      <Navbar />
-      <div className="max-w-3xl mx-auto p-6 md:p-10">
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold">Your Insights</h1>
-          <p className="text-sm text-gray-500 mt-1">
+    <AppShell>
+      <div style={{ maxWidth: 800, margin: "0 auto", padding: "2rem 1.5rem" }}>
+        <div style={{ marginBottom: "1.5rem" }}>
+          <h1 style={{ fontSize: "1.5rem", fontWeight: 800, color: "#0f172a", margin: 0 }}>
+            Your Insights
+          </h1>
+          <p style={{ color: "#64748b", fontSize: "0.875rem", marginTop: "0.3rem" }}>
             Track your emotional patterns and wellbeing over time.
           </p>
         </div>
         <InsightsDashboard />
       </div>
-    </div>
+    </AppShell>
   );
 }

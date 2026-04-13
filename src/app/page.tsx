@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFaceSmile, faFaceMeh, faFaceFrown, faFaceAngry, faFaceTired, faBrain, faCommentDots, faChartPie, faShieldHalved, faEarthAfrica, faHandHoldingHeart } from "@fortawesome/free-solid-svg-icons";
 
 export default function Home() {
   return (
@@ -7,8 +9,7 @@ export default function Home() {
       {/* NAV */}
       <nav className="tb-nav">
         <div className="tb-logo">
-          <div className="tb-logo-icon">T</div>
-          <span>Therabuddy</span>
+          <img src="/logo.png" alt="Therabuddy" width={200} height={48} />
         </div>
         <div className="tb-nav-links">
           <Link href="/login">Login</Link>
@@ -57,11 +58,11 @@ export default function Home() {
           <div className="tb-preview-card tb-card-mood">
             <div className="tb-mood-label">Today&apos;s mood</div>
             <div className="tb-mood-emojis">
-              <span className="active">😊</span>
-              <span>😐</span>
-              <span>😢</span>
-              <span>😠</span>
-              <span>😴</span>
+              <span className="active"><FontAwesomeIcon icon={faFaceSmile} /></span>
+              <span><FontAwesomeIcon icon={faFaceMeh} /></span>
+              <span><FontAwesomeIcon icon={faFaceFrown} /></span>
+              <span><FontAwesomeIcon icon={faFaceAngry} /></span>
+              <span><FontAwesomeIcon icon={faFaceTired} /></span>
             </div>
           </div>
         </div>
@@ -72,12 +73,12 @@ export default function Home() {
         <h2 className="tb-section-title">Everything you need to feel better</h2>
         <div className="tb-features-grid">
           {[
-            { icon: "🧠", title: "AI Diagnostics", desc: "Real-time detection of anxiety, depression & burnout signals using evidence-based screening." },
-            { icon: "💬", title: "Safe Chat", desc: "Talk to Therabuddy anytime. Completely private, non-judgmental, available 24/7." },
-            { icon: "📊", title: "Mood Insights", desc: "Track your emotional patterns over time with a personal wellness dashboard." },
-            { icon: "🛡️", title: "Crisis Detection", desc: "High-risk flags trigger immediate support resources and professional referrals." },
-            { icon: "🌍", title: "Built for Africa", desc: "Culturally sensitive support designed for the realities of African students and professionals." },
-            { icon: "💊", title: "Coping Tools", desc: "Guided breathing, journaling prompts, and grounding exercises built right in." },
+            { icon: <FontAwesomeIcon icon={faBrain} />, title: "AI Diagnostics", desc: "Real-time detection of anxiety, depression & burnout signals using evidence-based screening." },
+            { icon: <FontAwesomeIcon icon={faCommentDots} />, title: "Safe Chat", desc: "Talk to Therabuddy anytime. Completely private, non-judgmental, available 24/7." },
+            { icon: <FontAwesomeIcon icon={faChartPie} />, title: "Mood Insights", desc: "Track your emotional patterns over time with a personal wellness dashboard." },
+            { icon: <FontAwesomeIcon icon={faShieldHalved} />, title: "Crisis Detection", desc: "High-risk flags trigger immediate support resources and professional referrals." },
+            { icon: <FontAwesomeIcon icon={faEarthAfrica} />, title: "Built for Africa", desc: "Culturally sensitive support designed for the realities of African students and professionals." },
+            { icon: <FontAwesomeIcon icon={faHandHoldingHeart} />, title: "Coping Tools", desc: "Guided breathing, journaling prompts, and grounding exercises built right in." },
           ].map((f) => (
             <div key={f.title} className="tb-feature-card">
               <div className="tb-feature-icon">{f.icon}</div>
@@ -99,7 +100,7 @@ export default function Home() {
       {/* FOOTER */}
       <footer className="tb-footer">
         <div className="tb-logo">
-          <div className="tb-logo-icon">T</div>
+          <img src="/therabuddy.png" alt="Therabuddy" width={50} height={48} />
           <span>Therabuddy</span>
         </div>
         <p>© 2025 Therabuddy · Built with care for Africa&apos;s mental health</p>

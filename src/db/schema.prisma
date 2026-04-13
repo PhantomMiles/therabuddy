@@ -1,86 +1,112 @@
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["driverAdapters"]
+provider        = "prisma-client-js"
+previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+provider = "sqlite"
+}
+
+enum Role {
+  patient
+  therapist
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String    @unique
-  password      String?
-  emailVerified DateTime?
-  image         String?
-  createdAt     DateTime  @default(now())
+id            String   @id @default(cuid())
+name          String?
+email         String   @unique
+password      String?
+emailVerified DateTime?
+image         String?
+role          String   @default("patient")
+createdAt     DateTime @default(now())
 
-  messages       Message[]
-  moodLogs       MoodLog[]
-  diagnosticLogs DiagnosticLog[]
-  accounts       Account[]
-  sessions       Session[]
+messages          Message[]
+moodLogs          MoodLog[]
+diagnosticLogs    DiagnosticLog[]
+accounts          Account[]
+sessions          Session[]
+
+patientSessions   TherapySession[] @relation("PatientSessions")
+therapistSessions TherapySession[] @relation("TherapistSessions")
 }
 
 model Message {
-  id        String   @id @default(cuid())
-  content   String
-  role      String
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  createdAt DateTime @default(now())
+id        String   @id @default(cuid())
+content   String
+role      String
+userId    String
+createdAt DateTime @default(now())
+
+user User @relation(fields: [userId], references: [id])
 }
 
 model MoodLog {
-  id        String   @id @default(cuid())
-  mood      String
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  createdAt DateTime @default(now())
+id        String   @id @default(cuid())
+mood      String
+userId    String
+createdAt DateTime @default(now())
+
+user User @relation(fields: [userId], references: [id])
 }
 
 model DiagnosticLog {
-  id             String   @id @default(cuid())
-  userId         String
-  user           User     @relation(fields: [userId], references: [id])
-  risk           String
-  flags          String
-  recommendation String
-  createdAt      DateTime @default(now())
+id             String   @id @default(cuid())
+userId         String
+risk           String
+flags          String
+recommendation String
+createdAt      DateTime @default(now())
+
+user User @relation(fields: [userId], references: [id])
+}
+
+model TherapySession {
+id          String   @id @default(cuid())
+patientId   String
+therapistId String
+status      String   @default("scheduled")
+notes       String?
+scheduledAt DateTime
+createdAt   DateTime @default(now())
+
+patient   User @relation("PatientSessions", fields: [patientId], references: [id])
+therapist User @relation("TherapistSessions", fields: [therapistId], references: [id])
 }
 
 model Account {
-  id                String  @id @default(cuid())
-  userId            String
-  type              String
-  provider          String
-  providerAccountId String
-  refresh_token     String?
-  access_token      String?
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String?
-  session_state     String?
-  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+id                String  @id @default(cuid())
+userId            String
+type              String
+provider          String
+providerAccountId String
+refresh_token     String?
+access_token      String?
+expires_at        Int?
+token_type        String?
+scope             String?
+id_token          String?
+session_state     String?
 
-  @@unique([provider, providerAccountId])
+user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+@@unique([provider, providerAccountId])
 }
 
 model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+id           String   @id @default(cuid())
+sessionToken String   @unique
+userId       String
+expires      DateTime
+
+user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
+identifier String
+token      String   @unique
+expires    DateTime
 
-  @@unique([identifier, token])
+@@unique([identifier, token])
 }

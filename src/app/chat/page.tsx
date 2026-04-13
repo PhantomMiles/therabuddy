@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/auth";
-import Navbar from "@/components/Navbar";
+import AppShell from "@/components/AppShell";
 import ChatWindow from "@/components/ChatWindow";
 
 export default async function ChatPage() {
@@ -9,20 +9,21 @@ export default async function ChatPage() {
   if (!session) redirect("/login");
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-black">
-      <Navbar />
-      <div className="max-w-3xl mx-auto p-6 md:p-10">
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold">Talk to Therabuddy</h1>
-          <p className="text-sm text-gray-500 mt-1">
+    <AppShell>
+      <div style={{ maxWidth: 800, margin: "0 auto", padding: "2rem 1.5rem" }}>
+        <div style={{ marginBottom: "1.5rem" }}>
+          <h1 style={{ fontSize: "1.5rem", fontWeight: 800, color: "#0f172a", margin: 0 }}>
+            Talk to Therabuddy
+          </h1>
+          <p style={{ color: "#64748b", fontSize: "0.875rem", marginTop: "0.3rem" }}>
             A safe, private space to share how you&apos;re feeling. Everything is confidential.
           </p>
         </div>
         <ChatWindow />
-        <p className="text-xs text-center text-gray-400 mt-4">
-          Therabuddy is an AI companion, not a licensed therapist. If you&apos;re in crisis, please contact a mental health professional or call a helpline.
+        <p style={{ textAlign: "center", fontSize: "0.7rem", color: "#cbd5e1", marginTop: "1rem" }}>
+          Therabuddy is an AI companion, not a licensed therapist. If you&apos;re in crisis, please contact a mental health professional.
         </p>
       </div>
-    </div>
+    </AppShell>
   );
 }

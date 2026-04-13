@@ -4,12 +4,14 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
-    const { name, email, password } = body;
+    const { name, email, password, role } = await req.json();
 
     if (!name || !email || !password) {
       return NextResponse.json({ error: "All fields are required." }, { status: 400 });
     }
+
+    const validRoles = ["patient", "therapist"];
+    const userRole = validRoles.includes(role) ? role : "patient";
 
     const existing = await prisma.user.findUnique({ where: { email } });
     if (existing) {
@@ -17,14 +19,13 @@ export async function POST(req: Request) {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-
     const user = await prisma.user.create({
-      data: { name, email, password: hashedPassword },
+      data: { name, email, password: hashedPassword, role: userRole },
     });
 
-    return NextResponse.json({ id: user.id, email: user.email }, { status: 201 });
-  } catch (err) {
+    return NextResponse.json({ id: user.id, email: user.email, role: user.role }, { status: 201 });
+  } catch (err: any) {
     console.error(err);
-    return NextResponse.json({ error: "Server error." }, { status: 500 });
+    return NextResponse.json({ error: err?.message || String(err) }, { status: 500 });
   }
 }
