@@ -47,7 +47,7 @@ export async function POST(req: Request) {
       take: 10,
     });
 
-    const conversationHistory = history.map((m) => ({
+    const conversationHistory = history.map((m: any) => ({
       role: m.role === "user" ? ("user" as const) : ("assistant" as const),
       content: m.content,
     }));
