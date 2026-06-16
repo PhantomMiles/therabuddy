@@ -1,352 +1,393 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFaceSmile, faFaceMeh, faFaceFrown, faFaceAngry, faFaceTired, faBrain, faCommentDots, faChartPie, faShieldHalved, faEarthAfrica, faHandHoldingHeart } from "@fortawesome/free-solid-svg-icons";
+import {
+  faGlobeAfrica, faBrain, faComments, faHeart,
+  faChartLine, faShieldHalved, faArrowRight, faFaceSmileBeam, faFaceMeh, faFaceSadTear, faFaceAngry, faFaceTired,
+} from "@fortawesome/free-solid-svg-icons";
+import {
+  faFacebook, faTwitter, faInstagram, faLinkedin,
+} from "@fortawesome/free-brands-svg-icons";
 
 export default function Home() {
-  return (
-    <main className="tb-landing">
+  const [selectedMood, setSelectedMood] = useState(0);
 
-      {/* NAV */}
-      <nav className="tb-nav">
-        <div className="tb-logo">
-          <img src="/logo.png" alt="Therabuddy" width={200} height={48} />
-        </div>
-        <div className="tb-nav-links">
-          <Link href="/login">Login</Link>
-          <Link href="/signup" className="tb-btn-primary">Get Started</Link>
+  return (
+    <main style={{ fontFamily: "'Inter', 'DM Sans', sans-serif", minHeight: "100vh", color: "var(--text-primary)", position: "relative", overflowX: "hidden" }}>
+      {/* Background Blobs */}
+      <div className="tb-blob-container">
+        <div className="tb-blob tb-blob-1"></div>
+        <div className="tb-blob tb-blob-2"></div>
+        <div className="tb-blob tb-blob-3"></div>
+      </div>
+
+      {/* ── NAV ── */}
+      <nav style={{
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+        padding: "1rem 2.5rem",
+        background: "var(--violet-50)",
+        backdropFilter: "blur(20px)",
+        WebkitBackdropFilter: "blur(20px)",
+        borderBottom: "1px solid var(--glass-border)",
+        position: "sticky", top: 0, zIndex: 50,
+      }}>
+        <Link href="/" style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "0.5rem",
+          textDecoration: "none",
+          transition: "opacity 0.2s"
+        }}>
+          <div style={{
+            width: 44, height: 44, borderRadius: 12,
+            background: "rgba(255,255,255,0.8)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            boxShadow: "0 4px 12px rgba(139, 92, 246, 0.15)",
+            border: "1px solid var(--glass-border)",
+            overflow: "hidden",
+          }}>
+            <Image src="/therabuddy.png" alt="Therabuddy Logo" width={44} height={44} priority style={{ objectFit: "cover", width: "100%", height: "100%" }} />
+          </div>
+          <h3 style={{
+            fontSize: "1.2rem",
+            fontWeight: 700,
+            color: "var(--text-primary)",
+            fontFamily: "'DM Serif Display', serif",
+            margin: 0
+          }}>
+            Therabuddy
+          </h3>
+        </Link>
+        <div style={{ display: "flex", alignItems: "center", gap: "1.5rem" }}>
+          <Link href="/login" style={{ color: "var(--text-secondary)", textDecoration: "none", fontSize: "0.9rem", fontWeight: 500 }}>Login</Link>
+          <Link href="/signup" className="tb-btn" style={{ textDecoration: "none", padding: "0.6rem 1.4rem" }}>Get Started</Link>
         </div>
       </nav>
 
-      {/* HERO */}
-      <section className="tb-hero">
-        <div className="tb-hero-glow tb-glow-1" />
-        <div className="tb-hero-glow tb-glow-2" />
-        <div className="tb-hero-content">
-          <div className="tb-badge">AI-Powered · Built for Africa</div>
-          <h1 className="tb-hero-title">
-            Your mental health<br />
-            <span className="tb-accent">companion</span> is here.
+      {/* ── HERO ── */}
+      <section style={{
+        display: "grid", gridTemplateColumns: "1fr 1fr",
+        minHeight: "88vh", position: "relative", zIndex: 5
+      }}>
+        {/* Left */}
+        <div style={{
+          display: "flex", flexDirection: "column", justifyContent: "center",
+          padding: "4rem 3rem 4rem 5rem",
+          borderRight: "1px solid var(--glass-border)",
+        }}>
+          
+
+          <h1 style={{
+            fontFamily: "'DM Serif Display', serif",
+            fontSize: "clamp(2.8rem, 5vw, 4.2rem)",
+            lineHeight: 1.15, color: "var(--text-primary)",
+            fontWeight: 400, marginBottom: "1.75rem",
+            letterSpacing: "-0.01em",
+          }}>
+            Care your mind.<br />
+            <span style={{
+              background: "linear-gradient(135deg, var(--violet-500) 0%, #c084fc 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              fontWeight: 600
+            }}>Find your calm.</span>
           </h1>
-          <p className="tb-hero-sub">
-            Talk freely. Get support. Understand yourself better.
-            Therabuddy uses AI to detect early signs of anxiety and depression
-            and guide you toward healing — privately, affordably, any time.
+
+          <p style={{
+            fontSize: "1.05rem", color: "var(--text-secondary)",
+            lineHeight: 1.8, maxWidth: 440, marginBottom: "2.5rem",
+          }}>
+            AI-powered mental health support designed for African students and professionals. Talk freely. Track your mood. Get insights that matter.
           </p>
-          <div className="tb-hero-actions">
-            <Link href="/signup" className="tb-btn-hero">Start for free</Link>
-            <Link href="/login" className="tb-btn-ghost">I have an account</Link>
+
+          <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", marginBottom: "3rem" }}>
+            <Link href="/signup" className="tb-btn" style={{ textDecoration: "none", padding: "0.9rem 2.2rem", fontSize: "0.95rem" }}>
+              Start for free <FontAwesomeIcon icon={faArrowRight} style={{ fontSize: "0.8rem", marginLeft: "0.25rem" }} />
+            </Link>
+            <Link href="/login" className="tb-btn-ghost" style={{ textDecoration: "none", padding: "0.9rem 1.8rem" }}>
+              Sign in
+            </Link>
           </div>
-          <p className="tb-hero-note">No credit card · Fully private · Available 24/7</p>
+
+          {/* Social proof row */}
+          <div style={{ display: "flex", gap: "2.5rem" }}>
+            {[
+              { num: "98%", label: "Feel heard" },
+              { num: "24/7", label: "Always available" },
+            ].map(({ num, label }) => (
+              <div key={label}>
+                <p style={{ fontSize: "1.5rem", fontWeight: 800, color: "var(--text-primary)", lineHeight: 1 }}>{num}</p>
+                <p style={{ fontSize: "0.78rem", color: "var(--text-muted)", marginTop: "0.3rem", fontWeight: 500 }}>{label}</p>
+              </div>
+            ))}
+          </div>
         </div>
 
-        {/* Floating card preview */}
-        <div className="tb-hero-cards">
-          <div className="tb-preview-card tb-card-chat">
-            <div className="tb-card-dot tb-dot-ai" />
-            <div className="tb-card-msg ai">How are you feeling today? I&apos;m here to listen 💙</div>
-            <div className="tb-card-dot tb-dot-user" />
-            <div className="tb-card-msg user">I&apos;ve been really anxious lately...</div>
-          </div>
-          <div className="tb-preview-card tb-card-risk">
-            <div className="tb-risk-label">Wellness Score</div>
-            <div className="tb-risk-value">72<span>/100</span></div>
-            <div className="tb-risk-bar">
-              <div className="tb-risk-fill" style={{ width: "72%" }} />
+        {/* Right — visual panel */}
+        <div style={{
+          display: "flex", flexDirection: "column", justifyContent: "center",
+          padding: "3rem 5rem 3rem 3rem", gap: "1.5rem", position: "relative",
+        }}>
+          {/* Wellness score card */}
+          <div className="tb-card glow-purple" style={{
+            background: "var(--glass-bg)",
+            border: "1px solid var(--glass-border)",
+            borderRadius: 24, padding: "1.5rem",
+          }}>
+            <p style={{ fontSize: "0.68rem", color: "var(--text-muted)", fontWeight: 700, letterSpacing: "0.08em", marginBottom: "0.75rem" }}>YOUR WELLNESS SCORE</p>
+            <div style={{ display: "flex", alignItems: "baseline", gap: "0.3rem", marginBottom: "1rem" }}>
+              <span style={{ fontSize: "3rem", fontWeight: 800, color: "var(--violet-600)", lineHeight: 1 }}>78</span>
+              <span style={{ fontSize: "1.1rem", color: "var(--text-muted)", fontWeight: 500 }}>/100</span>
+              <span style={{ marginLeft: "auto", fontSize: "0.75rem", color: "var(--low-color)", background: "var(--low-bg)", padding: "0.25rem 0.75rem", borderRadius: 100, fontWeight: 600 }}>Low risk</span>
             </div>
-            <div className="tb-risk-status moderate">Moderate · Monitor closely</div>
+            <div style={{ height: 8, background: "var(--violet-100)", borderRadius: 100 }}>
+              <div style={{ height: "100%", width: "78%", background: "linear-gradient(-90deg, var(--sky-400), var(--pink-200), var(--violet-200))", borderRadius: 100 }} />
+            </div>
+            <p style={{ fontSize: "0.72rem", color: "var(--text-muted)", marginTop: "0.6rem" }}>↑ 12 points from last week</p>
           </div>
-          <div className="tb-preview-card tb-card-mood">
-            <div className="tb-mood-label">Today&apos;s mood</div>
-            <div className="tb-mood-emojis">
-              <span className="active"><FontAwesomeIcon icon={faFaceSmile} /></span>
-              <span><FontAwesomeIcon icon={faFaceMeh} /></span>
-              <span><FontAwesomeIcon icon={faFaceFrown} /></span>
-              <span><FontAwesomeIcon icon={faFaceAngry} /></span>
-              <span><FontAwesomeIcon icon={faFaceTired} /></span>
+
+          {/* Chat preview card */}
+          <div className="tb-card glow-purple" style={{
+            background: "var(--glass-bg)",
+            border: "1px solid var(--glass-border)",
+            borderRadius: 24, padding: "1.25rem",
+          }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1rem" }}>
+              <div style={{
+                width: 34, height: 34, borderRadius: "50%",
+                background: "linear-gradient(135deg, var(--pink-200), var(--violet-600))",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                boxShadow: "0 2px 8px rgba(139, 92, 246, 0.2)"
+              }}>
+                <FontAwesomeIcon icon={faBrain} style={{ color: "#fff", fontSize: "0.8rem" }} />
+              </div>
+              <div>
+                <p style={{ fontSize: "0.82rem", fontWeight: 600, color: "var(--text-primary)", margin: 0 }}>Therabuddy AI</p>
+                <p style={{ fontSize: "0.68rem", color: "#10b981", margin: 0, fontWeight: 500 }}>● Online</p>
+              </div>
+            </div>
+            <div style={{ background: "rgba(255, 255, 255, 0.45)", border: "1px solid var(--glass-border)", borderRadius: "18px 18px 18px 4px", padding: "0.75rem 1rem", marginBottom: "0.75rem" }}>
+              <p style={{ fontSize: "0.85rem", color: "var(--text-primary)", lineHeight: 1.55, margin: 0 }}>
+                How are you feeling today? I&apos;m here to listen 🌿
+              </p>
+            </div>
+            <div style={{ background: "linear-gradient(-135deg, var(--violet-400) 0%, var(--sky-400) 100%)", borderRadius: "18px 18px 4px 18px", padding: "0.75rem 1rem", maxWidth: "80%", marginLeft: "auto", boxShadow: "0 4px 12px rgba(139, 92, 246, 0.15)" }}>
+              <p style={{ fontSize: "0.85rem", color: "#fff", lineHeight: 1.55, margin: 0 }}>I&apos;ve been a bit anxious lately...</p>
+            </div>
+          </div>
+
+          {/* Mood row */}
+          <div className="tb-card" style={{
+            background: "var(--glass-bg)",
+            border: "1px solid var(--glass-border)",
+            borderRadius: 20, padding: "1rem 1.25rem",
+            display: "flex", alignItems: "center", gap: "1rem",
+          }}>
+            <p style={{ fontSize: "0.72rem", color: "var(--text-muted)", fontWeight: 700, letterSpacing: "0.05em", flexShrink: 0 }}>TODAY&apos;S MOOD</p>
+            <div style={{ display: "flex", gap: "0.5rem", flex: 1, position: "relative" }}>
+              {/* The Slider Background */}
+              <div style={{
+                position: "absolute",
+                top: 0,
+                bottom: 0,
+                width: "calc((100% - 2rem) / 5)", // 2rem is the total gap (0.5rem * 4)
+                left: `calc(${selectedMood} * (20% + 0.1rem))`,
+                background: "linear-gradient(135deg, var(--blue-100), var(--blue-200))",
+                borderRadius: 10,
+                transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+                zIndex: 0,
+              }} />
+
+              {[faFaceSmileBeam, faFaceMeh, faFaceSadTear, faFaceAngry, faFaceTired].map((e, i) => (
+                <div
+                  key={i}
+                  onClick={() => setSelectedMood(i)}
+                  style={{
+                    flex: 1, textAlign: "center", fontSize: "1.3rem",
+                    padding: "0.45rem 0", borderRadius: 10,
+                    cursor: "pointer",
+                    position: "relative",
+                    zIndex: 1,
+                    transition: "all 0.3s ease",
+                    color: selectedMood === i ? "var(--violet-600)" : "var(--text-muted)",
+                    opacity: selectedMood === i ? 1 : 0.5,
+                  }}
+                >
+                  <FontAwesomeIcon icon={e} />
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* FEATURES */}
-      <section className="tb-features">
-        <h2 className="tb-section-title">Everything you need to feel better</h2>
-        <div className="tb-features-grid">
-          {[
-            { icon: <FontAwesomeIcon icon={faBrain} />, title: "AI Diagnostics", desc: "Real-time detection of anxiety, depression & burnout signals using evidence-based screening." },
-            { icon: <FontAwesomeIcon icon={faCommentDots} />, title: "Safe Chat", desc: "Talk to Therabuddy anytime. Completely private, non-judgmental, available 24/7." },
-            { icon: <FontAwesomeIcon icon={faChartPie} />, title: "Mood Insights", desc: "Track your emotional patterns over time with a personal wellness dashboard." },
-            { icon: <FontAwesomeIcon icon={faShieldHalved} />, title: "Crisis Detection", desc: "High-risk flags trigger immediate support resources and professional referrals." },
-            { icon: <FontAwesomeIcon icon={faEarthAfrica} />, title: "Built for Africa", desc: "Culturally sensitive support designed for the realities of African students and professionals." },
-            { icon: <FontAwesomeIcon icon={faHandHoldingHeart} />, title: "Coping Tools", desc: "Guided breathing, journaling prompts, and grounding exercises built right in." },
-          ].map((f) => (
-            <div key={f.title} className="tb-feature-card">
-              <div className="tb-feature-icon">{f.icon}</div>
-              <h3>{f.title}</h3>
-              <p>{f.desc}</p>
-            </div>
-          ))}
+      {/* ── FEATURES ── */}
+      <section style={{
+        width: "100%",
+        position: "relative",
+        paddingTop: "60px",
+        paddingBottom: "60px",
+        zIndex: 5,
+        borderTop: "1px solid var(--violet-200)",
+      }}>
+        <div className="tb-container">
+          <div style={{ marginBottom: "3rem" }}>
+            <h2 style={{ fontFamily: "'DM Serif Display', serif", fontSize: "2.5rem", fontWeight: 400, color: "var(--text-primary)", lineHeight: 1.2, marginBottom: "1rem" }}>
+              Everything you need to feel better
+            </h2>
+            <p style={{ color: "var(--text-muted)", fontSize: "0.95rem", lineHeight: 1.7, maxWidth: 600, fontWeight: 500 }}>
+              Therabuddy combines AI diagnostics with compassionate conversation to support your mental wellness journey.
+            </p>
+          </div>
+          <div className="tb-grid tb-grid-3">
+            {[
+              { icon: faBrain, title: "AI Diagnostics", desc: "Real-time detection of anxiety, depression & burnout using evidence-based screening logic." },
+              { icon: faComments, title: "Safe Chat", desc: "Talk to Therabuddy anytime. Private, non-judgmental, available around the clock." },
+              { icon: faChartLine, title: "Mood Insights", desc: "Track your emotional patterns over time with a beautiful personal wellness dashboard." },
+              { icon: faShieldHalved, title: "Crisis Detection", desc: "High-risk flags trigger immediate support resources and professional referrals." },
+              { icon: faGlobeAfrica, title: "Built for Africa", desc: "Culturally sensitive support designed for African students and professionals." },
+              { icon: faHeart, title: "Coping Tools", desc: "Guided breathing, journaling prompts, and grounding exercises built right in." },
+            ].map(f => (
+              <div key={f.title} className="tb-card glow-purple" style={{
+                transition: "all 0.3s ease",
+                cursor: "default",
+                background: "var(--glass-bg)",
+                border: "1px solid var(--glass-border)",
+              }} onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "translateY(-6px)";
+                e.currentTarget.style.boxShadow = "0 15px 30px rgba(139, 92, 246, 0.12)";
+              }} onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "var(--shadow-md)";
+              }}>
+                <div style={{
+                  width: 42, height: 42, borderRadius: 12,
+                  background: "var(--violet-100)",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  marginBottom: "1rem",
+                }}>
+                  <FontAwesomeIcon icon={f.icon} style={{ color: "var(--blue-600)", fontSize: "1rem" }} />
+                </div>
+                <h3 style={{ fontSize: "0.95rem", fontWeight: 700, color: "var(--text-primary)", marginBottom: "0.5rem" }}>{f.title}</h3>
+                <p style={{ fontSize: "0.85rem", color: "var(--text-muted)", lineHeight: 1.65 }}>{f.desc}</p>
+              </div>
+            ))}
+          </div>
+          <div style={{ display: "flex", justifyContent: "center", marginTop: "3.5rem" }}>
+            <Link href="/signup" className="tb-btn" style={{ textDecoration: "none", padding: "1rem 2.5rem", fontSize: "1rem" }}>
+              Get started free
+            </Link>
+          </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="tb-cta">
-        <div className="tb-cta-glow" />
-        <h2>Start your wellness journey today.</h2>
-        <p>Free to use. No stigma. Just support.</p>
-        <Link href="/signup" className="tb-btn-hero">Create your free account</Link>
+      {/* ── CTA BAND ── */}
+      <section style={{
+        margin: "0 2rem 4rem",
+        background: "linear-gradient(135deg, var(--pink-600) 0%, var(--peach-500) 100%)",
+        borderRadius: 32, padding: "4rem",
+        display: "grid", gridTemplateColumns: "1fr auto",
+        alignItems: "center", gap: "2rem",
+        boxShadow: "0 20px 50px rgba(139, 92, 246, 0.25)",
+        position: "relative", overflow: "hidden",
+        zIndex: 5
+      }}>
+        <div style={{
+          position: "absolute", top: -40, right: 200, width: 220, height: 220,
+          borderRadius: "50%", background: "rgba(255,255,255,0.08)", pointerEvents: "none",
+        }} />
+        <div style={{
+          position: "absolute", bottom: -60, left: 100, width: 180, height: 180,
+          borderRadius: "50%", background: "rgba(255,255,255,0.05)", pointerEvents: "none",
+        }} />
+        <div style={{ position: "relative", zIndex: 2 }}>
+          <h2 style={{ fontFamily: "'DM Serif Display', serif", fontSize: "2.2rem", fontWeight: 400, color: "#fff", marginBottom: "0.75rem" }}>
+            Start your wellness journey today.
+          </h2>
+          <p style={{ color: "rgba(255,255,255,0.8)", fontSize: "1.05rem" }}>Free to use. No stigma. Just support.</p>
+        </div>
+        <Link href="/signup" style={{
+          background: "#fff", color: "var(--violet-700)",
+          padding: "0.9rem 2.2rem", borderRadius: "100px",
+          textDecoration: "none", fontWeight: 700, fontSize: "0.95rem",
+          whiteSpace: "nowrap", flexShrink: 0,
+          display: "inline-flex", alignItems: "center", gap: "0.5rem",
+          boxShadow: "0 10px 25px rgba(0,0,0,0.1)",
+          transition: "transform 0.2s ease",
+          position: "relative", zIndex: 2,
+        }}
+          onMouseEnter={(e) => e.currentTarget.style.transform = "translateY(-2px)"}
+          onMouseLeave={(e) => e.currentTarget.style.transform = "translateY(0)"}>
+          Create free account <FontAwesomeIcon icon={faArrowRight} style={{ fontSize: "0.8rem" }} />
+        </Link>
       </section>
 
-      {/* FOOTER */}
-      <footer className="tb-footer">
-        <div className="tb-logo">
-          <img src="/therabuddy.png" alt="Therabuddy" width={50} height={48} />
-          <span>Therabuddy</span>
+      {/* ── FOOTER ── */}
+      <footer style={{
+        borderTop: "1px solid var(--glass-border)",
+        padding: "3rem 4rem 2rem",
+        background: "var(--glass-bg)",
+        backdropFilter: "blur(20px)",
+        WebkitBackdropFilter: "blur(20px)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        flexWrap: "wrap",
+        gap: "1rem",
+        position: "relative",
+        zIndex: 5
+      }}>
+        <Link href="/" style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "0.5rem",
+          textDecoration: "none",
+          transition: "opacity 0.2s"
+        }}>
+          <div style={{
+            width: 38, height: 38, borderRadius: 10,
+            background: "#fff",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
+            border: "1px solid var(--glass-border)",
+            overflow: "hidden",
+          }}>
+            <Image src="/therabuddy.png" alt="Therabuddy Logo" width={38} height={38} priority style={{ objectFit: "cover", width: "100%", height: "100%" }} />
+          </div>
+          <span style={{
+            fontFamily: "'DM Serif Display', serif",
+            fontSize: "1.1rem",
+            color: "var(--text-primary)",
+            fontWeight: 700
+          }}>
+            Therabuddy
+          </span>
+        </Link>
+        <div style={{ display: "flex", alignItems: "center", gap: "2rem" }}>
+          <FontAwesomeIcon icon={faFacebook} style={{ fontSize: "1.4rem", color: "var(--text-muted)" }} />
+          <FontAwesomeIcon icon={faTwitter} style={{ fontSize: "1.4rem", color: "var(--text-muted)" }} />
+          <FontAwesomeIcon icon={faInstagram} style={{ fontSize: "1.4rem", color: "var(--text-muted)" }} />
+          <FontAwesomeIcon icon={faLinkedin} style={{ fontSize: "1.4rem", color: "var(--text-muted)" }} />
+          <FontAwesomeIcon icon={faGlobeAfrica} style={{ fontSize: "1.4rem", color: "var(--text-muted)" }} />
         </div>
-        <p>© 2025 Therabuddy · Built with care for Africa&apos;s mental health</p>
-        <p className="tb-disclaimer">
-          Therabuddy is an AI companion, not a licensed therapist. If you&apos;re in crisis,
-          please contact a mental health professional or local helpline immediately.
-        </p>
+        <hr style={{ borderColor: "var(--glass-border)", width: "100%", margin: "1.5rem 0" }} />
+        <div style={{ width: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+          <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", maxWidth: 520, textAlign: "center", lineHeight: 1.6, fontWeight: 500 }}>
+            © 2026 Therabuddy · AI companion, not a licensed therapist.
+          </p>
+          <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", maxWidth: 520, textAlign: "center", lineHeight: 1.6, fontWeight: 500 }}>
+            If you&apos;re in crisis, please contact a mental health professional.
+          </p>
+        </div>
       </footer>
 
       <style>{`
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-
-        .tb-landing {
-          background: #050d1a;
-          color: #e8edf5;
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-          min-height: 100vh;
-          overflow-x: hidden;
-        }
-
-        /* NAV */
-        .tb-nav {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 1.25rem 2.5rem;
-          border-bottom: 1px solid rgba(255,255,255,0.06);
-          position: sticky;
-          top: 0;
-          background: rgba(5,13,26,0.9);
-          backdrop-filter: blur(12px);
-          z-index: 100;
-        }
-        .tb-logo { display: flex; align-items: center; gap: 0.6rem; font-weight: 700; font-size: 1.1rem; color: #fff; text-decoration: none; }
-        .tb-logo-icon {
-          width: 32px; height: 32px; border-radius: 8px;
-          background: linear-gradient(135deg, #00d4aa, #0284c7);
-          display: flex; align-items: center; justify-content: center;
-          font-weight: 800; font-size: 0.9rem; color: #fff;
-        }
-        .tb-nav-links { display: flex; align-items: center; gap: 1.5rem; }
-        .tb-nav-links a { color: #94a3b8; text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
-        .tb-nav-links a:hover { color: #fff; }
-        .tb-btn-primary {
-          background: #00d4aa; color: #050d1a !important;
-          padding: 0.5rem 1.25rem; border-radius: 8px;
-          font-weight: 600; font-size: 0.875rem !important;
-          transition: opacity 0.2s !important;
-        }
-        .tb-btn-primary:hover { opacity: 0.85; }
-
-        /* HERO */
-        .tb-hero {
-          position: relative;
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 3rem;
-          align-items: center;
-          min-height: 88vh;
-          padding: 5rem 2.5rem 4rem;
-          max-width: 1200px;
-          margin: 0 auto;
-        }
-        .tb-hero-glow {
-          position: absolute;
-          border-radius: 50%;
-          filter: blur(80px);
-          pointer-events: none;
-        }
-        .tb-glow-1 {
-          width: 500px; height: 500px;
-          background: rgba(0,212,170,0.12);
-          top: -100px; left: -100px;
-        }
-        .tb-glow-2 {
-          width: 400px; height: 400px;
-          background: rgba(2,132,199,0.1);
-          bottom: 0; right: -80px;
-        }
-        .tb-badge {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.5rem;
-          background: rgba(0,212,170,0.12);
-          border: 1px solid rgba(0,212,170,0.25);
-          color: #00d4aa;
-          padding: 0.35rem 0.9rem;
-          border-radius: 100px;
-          font-size: 0.8rem;
-          font-weight: 500;
-          margin-bottom: 1.5rem;
-        }
-        .tb-hero-title {
-          font-size: clamp(2.5rem, 5vw, 3.8rem);
-          font-weight: 800;
-          line-height: 1.1;
-          color: #fff;
-          margin-bottom: 1.5rem;
-          letter-spacing: -0.02em;
-        }
-        .tb-accent { color: #00d4aa; }
-        .tb-hero-sub {
-          font-size: 1.05rem;
-          color: #94a3b8;
-          line-height: 1.7;
-          max-width: 480px;
-          margin-bottom: 2rem;
-        }
-        .tb-hero-actions { display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; }
-        .tb-btn-hero {
-          background: #00d4aa;
-          color: #050d1a;
-          padding: 0.85rem 2rem;
-          border-radius: 10px;
-          font-weight: 700;
-          font-size: 0.95rem;
-          text-decoration: none;
-          transition: transform 0.2s, opacity 0.2s;
-          display: inline-block;
-        }
-        .tb-btn-hero:hover { transform: translateY(-2px); opacity: 0.9; }
-        .tb-btn-ghost {
-          color: #94a3b8;
-          text-decoration: none;
-          font-size: 0.9rem;
-          padding: 0.85rem 1.25rem;
-          border: 1px solid rgba(255,255,255,0.1);
-          border-radius: 10px;
-          transition: border-color 0.2s, color 0.2s;
-        }
-        .tb-btn-ghost:hover { border-color: rgba(255,255,255,0.25); color: #fff; }
-        .tb-hero-note { font-size: 0.78rem; color: #475569; }
-
-        /* HERO CARDS */
-        .tb-hero-cards {
-          display: flex;
-          flex-direction: column;
-          gap: 1rem;
-          position: relative;
-          z-index: 1;
-        }
-        .tb-preview-card {
-          background: rgba(255,255,255,0.04);
-          border: 1px solid rgba(255,255,255,0.08);
-          border-radius: 16px;
-          padding: 1.25rem;
-          backdrop-filter: blur(8px);
-        }
-        .tb-card-chat { display: flex; flex-direction: column; gap: 0.75rem; }
-        .tb-card-dot { width: 6px; height: 6px; border-radius: 50%; }
-        .tb-dot-ai { background: #00d4aa; }
-        .tb-dot-user { background: #0284c7; align-self: flex-end; }
-        .tb-card-msg {
-          padding: 0.6rem 0.9rem;
-          border-radius: 12px;
-          font-size: 0.85rem;
-          max-width: 85%;
-          line-height: 1.5;
-        }
-        .tb-card-msg.ai { background: rgba(0,212,170,0.1); color: #cbd5e1; border-bottom-left-radius: 4px; }
-        .tb-card-msg.user { background: rgba(2,132,199,0.15); color: #cbd5e1; align-self: flex-end; border-bottom-right-radius: 4px; }
-        .tb-risk-label { font-size: 0.75rem; color: #64748b; margin-bottom: 0.5rem; }
-        .tb-risk-value { font-size: 2rem; font-weight: 800; color: #fff; margin-bottom: 0.75rem; }
-        .tb-risk-value span { font-size: 1rem; color: #475569; font-weight: 400; }
-        .tb-risk-bar { height: 6px; background: rgba(255,255,255,0.08); border-radius: 100px; margin-bottom: 0.75rem; }
-        .tb-risk-fill { height: 100%; background: linear-gradient(90deg, #00d4aa, #0284c7); border-radius: 100px; }
-        .tb-risk-status { font-size: 0.78rem; font-weight: 600; }
-        .tb-risk-status.moderate { color: #f59e0b; }
-        .tb-mood-label { font-size: 0.75rem; color: #64748b; margin-bottom: 0.75rem; }
-        .tb-mood-emojis { display: flex; gap: 1rem; font-size: 1.5rem; }
-        .tb-mood-emojis span { opacity: 0.35; cursor: pointer; transition: opacity 0.2s, transform 0.2s; }
-        .tb-mood-emojis span.active { opacity: 1; transform: scale(1.2); }
-
-        /* FEATURES */
-        .tb-features {
-          padding: 6rem 2.5rem;
-          max-width: 1200px;
-          margin: 0 auto;
-        }
-        .tb-section-title {
-          font-size: clamp(1.6rem, 3vw, 2.2rem);
-          font-weight: 800;
-          color: #fff;
-          text-align: center;
-          margin-bottom: 3rem;
-          letter-spacing: -0.02em;
-        }
-        .tb-features-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-          gap: 1.25rem;
-        }
-        .tb-feature-card {
-          background: rgba(255,255,255,0.03);
-          border: 1px solid rgba(255,255,255,0.07);
-          border-radius: 16px;
-          padding: 1.75rem;
-          transition: border-color 0.2s, background 0.2s;
-        }
-        .tb-feature-card:hover {
-          border-color: rgba(0,212,170,0.2);
-          background: rgba(0,212,170,0.04);
-        }
-        .tb-feature-icon { font-size: 1.75rem; margin-bottom: 1rem; }
-        .tb-feature-card h3 { font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; }
-        .tb-feature-card p { font-size: 0.875rem; color: #64748b; line-height: 1.65; }
-
-        /* CTA */
-        .tb-cta {
-          text-align: center;
-          padding: 6rem 2.5rem;
-          position: relative;
-          overflow: hidden;
-        }
-        .tb-cta-glow {
-          position: absolute;
-          width: 600px; height: 300px;
-          background: rgba(0,212,170,0.08);
-          border-radius: 50%;
-          filter: blur(60px);
-          top: 50%; left: 50%;
-          transform: translate(-50%, -50%);
-          pointer-events: none;
-        }
-        .tb-cta h2 { font-size: 2rem; font-weight: 800; color: #fff; margin-bottom: 0.75rem; position: relative; }
-        .tb-cta p { color: #64748b; margin-bottom: 2rem; position: relative; }
-
-        /* FOOTER */
-        .tb-footer {
-          border-top: 1px solid rgba(255,255,255,0.06);
-          padding: 2.5rem;
-          text-align: center;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 0.75rem;
-        }
-        .tb-footer p { font-size: 0.8rem; color: #334155; }
-        .tb-disclaimer { max-width: 520px; font-size: 0.72rem !important; color: #1e293b !important; }
-
         @media (max-width: 768px) {
-          .tb-hero { grid-template-columns: 1fr; padding: 3rem 1.5rem; min-height: auto; }
-          .tb-hero-cards { display: none; }
-          .tb-nav { padding: 1rem 1.5rem; }
-          .tb-features { padding: 4rem 1.5rem; }
-          .tb-cta { padding: 4rem 1.5rem; }
+          section { grid-template-columns: 1fr !important; }
+          section > div { padding: 2.5rem 1.5rem !important; }
         }
       `}</style>
     </main>

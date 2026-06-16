@@ -24,9 +24,9 @@ export default function WellnessChart({ logs }: { logs: any[] }) {
           <Line
             type="monotone"
             dataKey="score"
-            stroke="#00d4aa"
+            stroke="#8c6de0"
             strokeWidth={3}
-            dot={{ r: 4, fill: '#00d4aa' }}
+            dot={{ r: 4, fill: '#8c6de0' }}
             activeDot={{ r: 6 }}
           />
         </LineChart>

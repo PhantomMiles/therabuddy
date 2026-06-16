@@ -21,14 +21,14 @@ export default function Navbar() {
     <nav style={{
       display: "flex", alignItems: "center", justifyContent: "space-between",
       padding: "0 2rem", height: "64px",
-      background: "#fff", borderBottom: "1px solid #e2e8f0",
+      background: "#fff", borderBottom: "1px solid var(--glass-border)",
       position: "sticky", top: 0, zIndex: 50,
     }}>
       <Link href="/" style={{ display: "flex", alignItems: "center", gap: "0.6rem", textDecoration: "none" }}>
         <div style={{
           width: 200, height: 48, borderRadius: 8,
           display: "flex", alignItems: "center", justifyContent: "center",
-          fontWeight: 800, fontSize: "0.9rem", color: "#fff",
+          fontWeight: 800, fontSize: "0.9rem", color: "#1e1b4b",
         }}><img src="/logo.png" alt="Therabuddy" width={200} height={48} /></div>
       </Link>
 
@@ -41,8 +41,8 @@ export default function Navbar() {
                 display: "flex", alignItems: "center", gap: "0.4rem",
                 padding: "0.5rem 0.9rem", borderRadius: 8,
                 textDecoration: "none", fontSize: "0.875rem", fontWeight: 500,
-                color: active ? "#00d4aa" : "#64748b",
-                background: active ? "rgba(0,212,170,0.08)" : "transparent",
+                color: active ? "var(--sage-600)" : "#64748b",
+                background: active ? "var(--sage-50)" : "transparent",
                 transition: "all 0.15s",
               }}>
                 <FontAwesomeIcon icon={icon} style={{ fontSize: "0.8rem" }} />
@@ -58,7 +58,7 @@ export default function Navbar() {
           <>
             <div style={{
               width: 34, height: 34, borderRadius: "50%",
-              background: "linear-gradient(135deg, #00d4aa, #0284c7)",
+              background: "linear-gradient(135deg, var(--sage-300), var(--sage-500))",
               display: "flex", alignItems: "center", justifyContent: "center",
               fontWeight: 700, fontSize: "0.8rem", color: "#fff",
             }}>
@@ -78,7 +78,7 @@ export default function Navbar() {
           <>
             <Link href="/login" style={{ color: "#64748b", textDecoration: "none", fontSize: "0.875rem" }}>Login</Link>
             <Link href="/signup" style={{
-              background: "#00d4aa", color: "#050d1a", padding: "0.5rem 1.25rem",
+              background: "var(--sage-500)", color: "#fff", padding: "0.5rem 1.25rem",
               borderRadius: 8, textDecoration: "none", fontSize: "0.875rem", fontWeight: 600,
             }}>Sign Up</Link>
           </>

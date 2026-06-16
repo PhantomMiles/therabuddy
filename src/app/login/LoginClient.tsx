@@ -2,7 +2,10 @@
 
 import { useState } from "react";
 import { signIn } from "next-auth/react";
+import Image from "next/image";
 import Link from "next/link";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBrain } from "@fortawesome/free-solid-svg-icons";
 
 export default function LoginClient() {
   const [email, setEmail] = useState("");
@@ -13,45 +16,37 @@ export default function LoginClient() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true); setError("");
-
-    const res = await signIn("credentials", {
-      email, password, redirect: false,
-    });
-
-    if (res?.error) {
-      setError("Invalid email or password.");
-      setLoading(false);
-      return;
-    }
-
-    // Fetch session to get role, then redirect
+    const res = await signIn("credentials", { email, password, redirect: false });
+    if (res?.error) { setError("Invalid email or password."); setLoading(false); return; }
     const sessionRes = await fetch("/api/auth/session");
     const session = await sessionRes.json();
-    const role = session?.user?.role;
-    window.location.href = role === "therapist" ? "/therapist" : "/dashboard";
+    window.location.href = session?.user?.role === "therapist" ? "/therapist" : "/dashboard";
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "#050d1a", display: "flex", alignItems: "center", justifyContent: "center", padding: "1.5rem" }}>
-      <div style={{ position: "fixed", width: 400, height: 400, borderRadius: "50%", background: "rgba(0,212,170,0.08)", filter: "blur(80px)", top: "20%", left: "30%", pointerEvents: "none" }} />
+    <div style={{ minHeight: "100vh", background: "var(--warm-100)", display: "flex", alignItems: "center", justifyContent: "center", padding: "1.5rem", fontFamily: "'DM Sans', sans-serif" }}>
+
+      {/* Decorative blob */}
+      <div style={{ position: "fixed", width: 500, height: 500, borderRadius: "50%", background: "var(--sage-100)", filter: "blur(80px)", top: "-100px", right: "-100px", pointerEvents: "none", zIndex: 0 }} />
 
       <div style={{ width: "100%", maxWidth: 420, position: "relative", zIndex: 1 }}>
+
+        {/* Logo */}
         <div style={{ textAlign: "center", marginBottom: "2rem" }}>
-          <div style={{
-            width: 48, height: 48, borderRadius: 12,
-            display: "flex", alignItems: "center", justifyContent: "center",
-            fontWeight: 800, fontSize: "1.2rem", color: "#fff", margin: "0 auto 1rem",
-          }}><img src="/therabuddy.png" alt="Therabuddy" width={200} height={48} /></div>
-          <h1 style={{ color: "#fff", fontSize: "1.6rem", fontWeight: 800, marginBottom: "0.4rem" }}>Welcome back</h1>
-          <p style={{ color: "#64748b", fontSize: "0.9rem" }}>Sign in to your account</p>
+          <Image src="/logo.png" alt="Therabuddy Logo" width={90} height={90} priority style={{ margin: "0 auto 1rem", display: "block" }} />
+          <h1 style={{ fontFamily: "'DM Serif Display', serif", fontSize: "1.7rem", color: "var(--text-primary)", fontWeight: 400 }}>Welcome back</h1>
+          <p style={{ color: "var(--text-muted)", fontSize: "0.875rem", marginTop: "0.3rem" }}>Sign in to your account</p>
         </div>
 
-        <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 20, padding: "2rem" }}>
+        <div style={{ background: "#fff", border: "1px solid var(--sage-100)", borderRadius: 22, padding: "2rem", boxShadow: "var(--shadow-md)" }}>
+
+          {/* Google */}
           <button onClick={() => signIn("google", { callbackUrl: "/dashboard" })} style={{
             width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: "0.75rem",
-            padding: "0.8rem", borderRadius: 10, background: "rgba(255,255,255,0.06)",
-            border: "1px solid rgba(255,255,255,0.1)", color: "#e2e8f0",
-            fontSize: "0.9rem", fontWeight: 500, cursor: "pointer", marginBottom: "1.5rem",
+            padding: "0.8rem", borderRadius: 12, background: "var(--warm-100)",
+            border: "1.5px solid var(--sage-100)", color: "var(--text-primary)",
+            fontSize: "0.875rem", fontWeight: 500, cursor: "pointer", marginBottom: "1.5rem",
+            fontFamily: "'DM Sans', sans-serif", transition: "all 0.15s",
           }}>
             <svg width="18" height="18" viewBox="0 0 48 48">
               <path fill="#EA4335" d="M24 9.5c3.54 0 6.69 1.22 9.19 3.6l6.85-6.85C35.82 2.46 30.31 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.2C12.32 13.21 17.72 9.5 24 9.5z"/>
@@ -63,42 +58,35 @@ export default function LoginClient() {
           </button>
 
           <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1.5rem" }}>
-            <div style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.08)" }} />
-            <span style={{ color: "#475569", fontSize: "0.8rem" }}>or</span>
-            <div style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.08)" }} />
+            <div style={{ flex: 1, height: 1, background: "var(--sage-100)" }} />
+            <span style={{ color: "var(--text-muted)", fontSize: "0.78rem" }}>or</span>
+            <div style={{ flex: 1, height: 1, background: "var(--sage-100)" }} />
           </div>
 
           {error && (
-            <div style={{ background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.2)", borderRadius: 8, padding: "0.75rem 1rem", color: "#fca5a5", fontSize: "0.85rem", marginBottom: "1rem" }}>
+            <div style={{ background: "#fce4ec", border: "1px solid #f8bbd9", borderRadius: 10, padding: "0.75rem 1rem", color: "#c62828", fontSize: "0.85rem", marginBottom: "1rem" }}>
               {error}
             </div>
           )}
 
           <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
             <div>
-              <label style={{ display: "block", color: "#94a3b8", fontSize: "0.8rem", fontWeight: 500, marginBottom: "0.4rem" }}>Email</label>
-              <input type="email" required placeholder="you@email.com" value={email} onChange={e => setEmail(e.target.value)}
-                style={{ width: "100%", padding: "0.75rem 1rem", borderRadius: 10, border: "1px solid rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.05)", color: "#e2e8f0", fontSize: "0.9rem", outline: "none" }} />
+              <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 500, color: "var(--text-secondary)", marginBottom: "0.4rem" }}>Email</label>
+              <input type="email" required placeholder="you@email.com" value={email} onChange={e => setEmail(e.target.value)} className="tb-input" />
             </div>
             <div>
-              <label style={{ display: "block", color: "#94a3b8", fontSize: "0.8rem", fontWeight: 500, marginBottom: "0.4rem" }}>Password</label>
-              <input type="password" required placeholder="••••••••" value={password} onChange={e => setPassword(e.target.value)}
-                style={{ width: "100%", padding: "0.75rem 1rem", borderRadius: 10, border: "1px solid rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.05)", color: "#e2e8f0", fontSize: "0.9rem", outline: "none" }} />
+              <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 500, color: "var(--text-secondary)", marginBottom: "0.4rem" }}>Password</label>
+              <input type="password" required placeholder="••••••••" value={password} onChange={e => setPassword(e.target.value)} className="tb-input" />
             </div>
-            <button type="submit" disabled={loading} style={{
-              width: "100%", padding: "0.85rem", borderRadius: 10,
-              background: loading ? "rgba(0,212,170,0.4)" : "#00d4aa",
-              color: "#050d1a", fontWeight: 700, fontSize: "0.95rem",
-              border: "none", cursor: loading ? "not-allowed" : "pointer",
-            }}>
+            <button type="submit" disabled={loading} className="tb-btn" style={{ width: "100%", justifyContent: "center", padding: "0.85rem", fontSize: "0.95rem", marginTop: "0.25rem" }}>
               {loading ? "Signing in..." : "Sign In"}
             </button>
           </form>
         </div>
 
-        <p style={{ textAlign: "center", color: "#475569", fontSize: "0.85rem", marginTop: "1.5rem" }}>
+        <p style={{ textAlign: "center", color: "var(--text-muted)", fontSize: "0.85rem", marginTop: "1.5rem" }}>
           Don&apos;t have an account?{" "}
-          <Link href="/signup" style={{ color: "#00d4aa", fontWeight: 600, textDecoration: "none" }}>Sign up free</Link>
+          <Link href="/signup" style={{ color: "var(--sage-600)", fontWeight: 600, textDecoration: "none" }}>Sign up free</Link>
         </p>
       </div>
     </div>

@@ -4,6 +4,27 @@ import { prisma } from "@/lib/prisma";
 import { runTherabuddyAI } from "@/lib/ai";
 import { NextResponse } from "next/server";
 
+// GET — load conversation history for the current user
+export async function GET() {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+    const userId = (session.user as any).id;
+    const messages = await prisma.message.findMany({
+      where: { userId },
+      orderBy: { createdAt: "asc" },
+      take: 50,
+    });
+
+    return NextResponse.json({ messages });
+  } catch (err) {
+    console.error(err);
+    return NextResponse.json({ error: "Server error." }, { status: 500 });
+  }
+}
+
+// POST — send a message and get an AI reply
 export async function POST(req: Request) {
   try {
     const session = await getServerSession(authOptions);
@@ -42,12 +63,12 @@ export async function POST(req: Request) {
       ],
     });
 
-    // Save diagnostic result
+    // Save diagnostic result — flags must be a JSON string (SQLite schema: String)
     await prisma.diagnosticLog.create({
       data: {
         userId,
         risk: diagnostic.risk,
-        flags: diagnostic.flags,
+        flags: JSON.stringify(diagnostic.flags),
         recommendation: diagnostic.recommendation,
       },
     });

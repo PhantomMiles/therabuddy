@@ -1,13 +1,15 @@
 "use client";
 
 import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFaceSmileBeam, faFaceMeh, faFaceSadTear, faFaceAngry, faFaceTired, faCheck } from "@fortawesome/free-solid-svg-icons";
 
 const moods = [
-  { key: "happy", emoji: "😊", label: "Happy", color: "#10b981" },
-  { key: "neutral", emoji: "😐", label: "Okay", color: "#f59e0b" },
-  { key: "sad", emoji: "😢", label: "Sad", color: "#3b82f6" },
-  { key: "angry", emoji: "😠", label: "Stressed", color: "#ef4444" },
-  { key: "tired", emoji: "😴", label: "Tired", color: "#8b5cf6" },
+  { key: "happy", icon: faFaceSmileBeam, label: "Happy", color: "#5a9060", bg: "#e8f5e9" },
+  { key: "neutral", icon: faFaceMeh, label: "Okay", color: "#8d6e63", bg: "#efebe9" },
+  { key: "sad", icon: faFaceSadTear, label: "Sad", color: "#5c7a9e", bg: "#e8eef5" },
+  { key: "angry", icon: faFaceAngry, label: "Stressed", color: "#b56060", bg: "#f5e8e8" },
+  { key: "tired", icon: faFaceTired, label: "Tired", color: "#7b6fa0", bg: "#eeeaf5" },
 ];
 
 export default function MoodTracker() {
@@ -22,41 +24,62 @@ export default function MoodTracker() {
       body: JSON.stringify({ mood: key }),
     });
     setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
+    setTimeout(() => setSaved(false), 2500);
   };
 
+  const selectedMood = moods.find(m => m.key === selected);
+
   return (
-    <div style={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: 16, padding: "1.5rem" }}>
+    <div className="tb-card">
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.25rem" }}>
         <div>
-          <h2 style={{ fontSize: "1rem", fontWeight: 700, color: "#0f172a", marginBottom: "0.2rem" }}>Daily Mood</h2>
-          <p style={{ fontSize: "0.8rem", color: "#94a3b8" }}>How are you feeling right now?</p>
+          <h2 style={{ fontSize: "0.95rem", fontWeight: 600, color: "var(--text-primary)" }}>Daily Mood</h2>
+          <p style={{ fontSize: "0.775rem", color: "var(--text-muted)", marginTop: "0.15rem" }}>How are you feeling right now?</p>
         </div>
-        {saved && (
-          <span style={{ fontSize: "0.75rem", color: "#10b981", fontWeight: 600, background: "#dcfce7", padding: "0.25rem 0.75rem", borderRadius: 100 }}>
-            ✓ Logged
+        {saved && selectedMood && (
+          <span style={{
+            fontSize: "0.72rem", fontWeight: 600,
+            background: selectedMood.bg, color: selectedMood.color,
+            padding: "0.25rem 0.75rem", borderRadius: 100,
+          }}>
+            <FontAwesomeIcon icon={faCheck} style={{ marginRight: "0.25rem", fontSize: "0.65rem" }} />
+            Logged
           </span>
         )}
       </div>
 
-      <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
-        {moods.map(({ key, emoji, label, color }) => {
+      <div style={{ display: "flex", gap: "0.6rem", flexWrap: "wrap" }}>
+        {moods.map(({ key, icon, label, color, bg }) => {
           const active = selected === key;
           return (
             <button key={key} onClick={() => handleSelect(key)} style={{
-              flex: 1, minWidth: 64,
-              display: "flex", flexDirection: "column", alignItems: "center", gap: "0.4rem",
-              padding: "0.85rem 0.5rem", borderRadius: 12,
-              border: active ? `2px solid ${color}` : "2px solid #f1f5f9",
-              background: active ? `${color}15` : "#f8fafc",
-              cursor: "pointer", transition: "all 0.15s",
+              flex: 1, display: "flex", flexDirection: "column", alignItems: "center",
+              gap: "0.5rem", padding: "0.9rem 0.25rem", borderRadius: 14,
+              border: active ? `1.5px solid ${color}` : "1.5px solid var(--sage-100)",
+              background: active ? bg : "var(--warm-100)",
+              cursor: "pointer", transition: "all 0.18s",
+              transform: active ? "translateY(-2px)" : "none",
+              boxShadow: active ? `0 4px 12px ${color}22` : "none",
             }}>
-              <span style={{ fontSize: "1.6rem", lineHeight: 1 }}>{emoji}</span>
-              <span style={{ fontSize: "0.7rem", fontWeight: 600, color: active ? color : "#94a3b8" }}>{label}</span>
+              <FontAwesomeIcon icon={icon} style={{
+                fontSize: "1.5rem",
+                color: active ? color : "var(--text-muted)",
+                transition: "color 0.18s",
+              }} />
+              <span style={{
+                fontSize: "0.65rem", fontWeight: active ? 600 : 400,
+                color: active ? color : "var(--text-muted)",
+              }}>{label}</span>
             </button>
           );
         })}
       </div>
+
+      {selected && !saved && selectedMood && (
+        <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "0.75rem", textAlign: "center" }}>
+          Feeling <span style={{ color: selectedMood.color, fontWeight: 600 }}>{selectedMood.label}</span> today
+        </p>
+      )}
     </div>
   );
 }

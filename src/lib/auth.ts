@@ -72,17 +72,32 @@ export const authOptions: NextAuthOptions = {
       return true;
     },
 
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         token.id = (user as any).id;
         token.role = (user as any).role;
+        token.image = (user as any).image;
       }
-      // Refresh role from DB if missing
-      if (token.id && !token.role) {
+      
+      // Update token if session is updated (client-side update)
+      if (trigger === "update" && session?.image) {
+        token.image = session.image;
+      }
+      if (trigger === "update" && session?.name) {
+        token.name = session.name;
+      }
+
+      // Refresh from DB if missing or to stay fresh
+      if (token.id) {
         const dbUser = await prisma.user.findUnique({
           where: { id: token.id as string },
+          select: { role: true, image: true, name: true }
         });
-        if (dbUser) token.role = dbUser.role;
+        if (dbUser) {
+          token.role = dbUser.role;
+          token.image = dbUser.image;
+          token.name = dbUser.name;
+        }
       }
       return token;
     },
@@ -91,6 +106,8 @@ export const authOptions: NextAuthOptions = {
       if (session.user) {
         (session.user as any).id = token.id;
         (session.user as any).role = token.role;
+        session.user.image = token.image as string;
+        session.user.name = token.name as string;
       }
       return session;
     },

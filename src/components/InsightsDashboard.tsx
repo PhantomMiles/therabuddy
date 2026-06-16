@@ -1,12 +1,25 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faChartBar,
+  faFaceSmile,
+  faFaceMeh,
+  faFaceSadTear,
+  faFaceAngry,
+  faFaceTired,
+} from "@fortawesome/free-solid-svg-icons";
 
 type MoodLog = { mood: string; createdAt: string };
 type DiagnosticLog = { risk: string; recommendation: string; flags: string[]; createdAt: string };
 
-const moodEmoji: Record<string, string> = {
-  happy: "😊", neutral: "😐", sad: "😢", angry: "😠", tired: "😴",
+const moodEmoji: Record<string, any> = {
+  happy: faFaceSmile,
+  neutral: faFaceMeh,
+  sad: faFaceSadTear,
+  angry: faFaceAngry,
+  tired: faFaceTired,
 };
 
 const riskColors: Record<string, string> = {
@@ -69,7 +82,9 @@ export default function InsightsDashboard() {
   if (!moodLogs.length && !diagnosticLogs.length) {
     return (
       <div className="medical-card text-center py-10 text-gray-400">
-        <p className="text-3xl mb-3">📊</p>
+        <p className="text-3xl mb-3">
+          <FontAwesomeIcon icon={faChartBar} />
+        </p>
         <p className="font-medium">No data yet</p>
         <p className="text-sm mt-1">Log your mood and complete a check-in to see insights here.</p>
       </div>
@@ -90,7 +105,7 @@ export default function InsightsDashboard() {
         </div>
         <div className="medical-card text-center">
           <p className="text-3xl font-bold text-teal-600">{diagnosticLogs.length}</p>
-          <p className="text-xs text-gray-500 mt-1">Check-ins Done</p>
+          <p className="text-xs text-gray -500 mt-1">Check-ins Done</p>
         </div>
         <div className="medical-card text-center">
           {latestDiag ? (
@@ -113,7 +128,9 @@ export default function InsightsDashboard() {
           <div className="space-y-3">
             {Object.entries(moodCounts).sort((a, b) => b[1] - a[1]).map(([mood, count]) => (
               <div key={mood} className="flex items-center gap-3">
-                <span className="text-xl w-8">{moodEmoji[mood]}</span>
+                <span className="text-xl w-8 text-blue-500">
+                  <FontAwesomeIcon icon={moodEmoji[mood]} />
+                </span>
                 <span className="capitalize text-sm w-16">{mood}</span>
                 <div className="flex-1 bg-gray-100 dark:bg-neutral-800 rounded-full h-3">
                   <div

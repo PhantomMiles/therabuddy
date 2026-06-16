@@ -1,22 +1,18 @@
 "use client";
 
 import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLightbulb } from "@fortawesome/free-solid-svg-icons";
 
 const questions = [
-  { id: "q1", text: "Overall mood recently?", options: ["Very Good", "Okay", "Low / Sad", "Hopeless"] },
+  { id: "q1", text: "How's your overall mood been lately?", options: ["Very Good", "Okay", "Low / Sad", "Hopeless"] },
   { id: "q2", text: "How has your sleep been?", options: ["Sleeping well", "Slightly disrupted", "Poor sleep", "Can't sleep at all"] },
-  { id: "q3", text: "Enjoying activities you like?", options: ["Yes, fully", "Somewhat", "Barely", "Not at all"] },
-  { id: "q4", text: "Your energy levels?", options: ["High energy", "Normal", "Often tired", "Exhausted"] },
-  { id: "q5", text: "Feeling anxious or worried?", options: ["Not at all", "Occasionally", "Often", "Almost constantly"] },
+  { id: "q3", text: "Are you enjoying things you normally like?", options: ["Yes, fully", "Somewhat", "Barely", "Not at all"] },
+  { id: "q4", text: "How are your energy levels?", options: ["High energy", "Normal", "Often tired", "Exhausted"] },
+  { id: "q5", text: "Have you felt anxious or worried?", options: ["Not at all", "Occasionally", "Often", "Almost constantly"] },
 ];
 
 type Result = { risk: "low" | "moderate" | "high"; summary: string; recommendation: string };
-
-const riskConfig = {
-  low: { color: "#10b981", bg: "#dcfce7", label: "Low Risk" },
-  moderate: { color: "#f59e0b", bg: "#fef9c3", label: "Moderate Risk" },
-  high: { color: "#ef4444", bg: "#fee2e2", label: "High Risk" },
-};
 
 export default function AssessmentForm() {
   const [answers, setAnswers] = useState<Record<string, string>>({});
@@ -30,7 +26,7 @@ export default function AssessmentForm() {
   const handleAnswer = (val: string) => {
     const updated = { ...answers, [current.id]: val };
     setAnswers(updated);
-    if (step < questions.length - 1) setTimeout(() => setStep(s => s + 1), 200);
+    if (step < questions.length - 1) setTimeout(() => setStep(s => s + 1), 220);
   };
 
   const handleSubmit = async () => {
@@ -40,78 +36,92 @@ export default function AssessmentForm() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ answers }),
     });
-    const data = await res.json();
-    setResult(data);
+    setResult(await res.json());
     setLoading(false);
   };
 
+  const riskStyle = {
+    low:      { color: "var(--low-color)",      bg: "var(--low-bg)",      label: "Low Risk"      },
+    moderate: { color: "var(--moderate-color)", bg: "var(--moderate-bg)", label: "Moderate Risk" },
+    high:     { color: "var(--high-color)",     bg: "var(--high-bg)",     label: "High Risk"     },
+  };
+
   if (result) {
-    const cfg = riskConfig[result.risk];
+    const rs = riskStyle[result.risk];
     return (
-      <div style={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: 16, padding: "1.5rem" }}>
-        <div style={{ background: cfg.bg, borderRadius: 12, padding: "1.25rem", marginBottom: "1rem" }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.75rem" }}>
-            <h3 style={{ fontSize: "0.95rem", fontWeight: 700, color: "#0f172a" }}>Check-in Result</h3>
-            <span style={{ fontSize: "0.72rem", fontWeight: 700, color: cfg.color, background: "#fff", padding: "0.2rem 0.65rem", borderRadius: 100 }}>{cfg.label}</span>
-          </div>
-          <p style={{ fontSize: "0.85rem", color: "#374151", lineHeight: 1.6 }}>{result.summary}</p>
+      <div className="tb-card">
+        <div style={{ marginBottom: "1rem" }}>
+          <span style={{ fontSize: "0.7rem", fontWeight: 700, color: rs.color, background: rs.bg, padding: "0.25rem 0.8rem", borderRadius: 100 }}>
+            {rs.label}
+          </span>
         </div>
-        <p style={{ fontSize: "0.8rem", color: "#64748b", lineHeight: 1.6, marginBottom: "1rem" }}>
-          💡 {result.recommendation}
-        </p>
+        <p style={{ fontSize: "0.9rem", color: "var(--text-primary)", lineHeight: 1.65, marginBottom: "1rem" }}>{result.summary}</p>
+        <div style={{ background: "var(--sage-50)", border: "1px solid var(--sage-100)", borderRadius: 12, padding: "0.9rem 1rem", marginBottom: "1rem" }}>
+          <p style={{ fontSize: "0.78rem", color: "var(--sage-600)", lineHeight: 1.6 }}>
+            <FontAwesomeIcon icon={faLightbulb} style={{ marginRight: "0.4rem", opacity: 0.8 }} />
+            {result.recommendation}
+          </p>
+        </div>
         <button onClick={() => { setResult(null); setAnswers({}); setStep(0); }} style={{
-          fontSize: "0.8rem", color: "#00d4aa", fontWeight: 600, background: "none", border: "none", cursor: "pointer", padding: 0,
-        }}>
-          Take another check-in →
-        </button>
+          fontSize: "0.8rem", color: "var(--sage-600)", fontWeight: 600,
+          background: "none", border: "none", cursor: "pointer", padding: 0,
+          fontFamily: "'DM Sans', sans-serif",
+        }}>← Take another check-in</button>
       </div>
     );
   }
 
   return (
-    <div style={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: 16, padding: "1.5rem" }}>
+    <div className="tb-card">
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.25rem" }}>
         <div>
-          <h2 style={{ fontSize: "1rem", fontWeight: 700, color: "#0f172a", marginBottom: "0.2rem" }}>Mental Check-in</h2>
-          <p style={{ fontSize: "0.8rem", color: "#94a3b8" }}>Question {step + 1} of {questions.length}</p>
+          <h2 style={{ fontSize: "0.95rem", fontWeight: 600, color: "var(--text-primary)" }}>Mental Check-in</h2>
+          <p style={{ fontSize: "0.775rem", color: "var(--text-muted)", marginTop: "0.15rem" }}>
+            Question {step + 1} of {questions.length}
+          </p>
         </div>
-        {/* Progress dots */}
-        <div style={{ display: "flex", gap: "0.35rem" }}>
+        <div style={{ display: "flex", gap: "0.3rem" }}>
           {questions.map((_, i) => (
             <div key={i} style={{
-              width: 8, height: 8, borderRadius: "50%",
-              background: i < step ? "#00d4aa" : i === step ? "#0284c7" : "#e2e8f0",
-              transition: "background 0.2s",
+              width: i === step ? 18 : 7, height: 7, borderRadius: 100,
+              background: i < step ? "var(--sage-400)" : i === step ? "var(--sage-500)" : "var(--sage-100)",
+              transition: "all 0.25s",
             }} />
           ))}
         </div>
       </div>
 
-      <p style={{ fontSize: "0.95rem", fontWeight: 600, color: "#0f172a", marginBottom: "1rem" }}>{current.text}</p>
+      <p style={{ fontSize: "0.95rem", fontWeight: 500, color: "var(--text-primary)", marginBottom: "1rem", lineHeight: 1.5 }}>
+        {current.text}
+      </p>
 
       <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", marginBottom: "1.25rem" }}>
-        {current.options.map(opt => (
-          <button key={opt} onClick={() => handleAnswer(opt)} style={{
-            padding: "0.7rem 1rem", borderRadius: 10, textAlign: "left",
-            border: answers[current.id] === opt ? "2px solid #00d4aa" : "2px solid #f1f5f9",
-            background: answers[current.id] === opt ? "rgba(0,212,170,0.06)" : "#f8fafc",
-            color: answers[current.id] === opt ? "#0f172a" : "#64748b",
-            fontSize: "0.875rem", fontWeight: 500, cursor: "pointer", transition: "all 0.15s",
-          }}>{opt}</button>
-        ))}
+        {current.options.map(opt => {
+          const chosen = answers[current.id] === opt;
+          return (
+            <button key={opt} onClick={() => handleAnswer(opt)} style={{
+              padding: "0.7rem 1rem", borderRadius: 11, textAlign: "left",
+              border: chosen ? "1.5px solid var(--sage-400)" : "1.5px solid var(--sage-100)",
+              background: chosen ? "var(--sage-50)" : "transparent",
+              color: chosen ? "var(--sage-700)" : "var(--text-secondary)",
+              fontSize: "0.875rem", fontWeight: chosen ? 500 : 400,
+              cursor: "pointer", transition: "all 0.15s",
+              fontFamily: "'DM Sans', sans-serif",
+            }}>{opt}</button>
+          );
+        })}
       </div>
 
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         {step > 0 ? (
-          <button onClick={() => setStep(s => s - 1)} style={{ fontSize: "0.8rem", color: "#94a3b8", background: "none", border: "none", cursor: "pointer" }}>← Back</button>
+          <button onClick={() => setStep(s => s - 1)} style={{
+            fontSize: "0.8rem", color: "var(--text-muted)", background: "none",
+            border: "none", cursor: "pointer", fontFamily: "'DM Sans', sans-serif",
+          }}>← Back</button>
         ) : <div />}
         {allAnswered && (
-          <button onClick={handleSubmit} disabled={loading} style={{
-            padding: "0.6rem 1.5rem", borderRadius: 10,
-            background: "#00d4aa", color: "#050d1a", fontWeight: 700, fontSize: "0.875rem",
-            border: "none", cursor: "pointer", opacity: loading ? 0.6 : 1,
-          }}>
-            {loading ? "Analysing..." : "See Results"}
+          <button onClick={handleSubmit} disabled={loading} className="tb-btn" style={{ fontSize: "0.825rem", padding: "0.55rem 1.25rem" }}>
+            {loading ? "Analysing..." : "See Results →"}
           </button>
         )}
       </div>
